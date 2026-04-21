@@ -38,20 +38,7 @@ const ShopContextProvider = ({ children }) => {
       cartData[itemId][size] = 1;
     }
     setCartItems(cartData);
-    toast.success(
-      <div className="flex items-center justify-between gap-4">
-        <span>Item added to cart</span>
-        <button
-          onClick={() => navigate("/cart")}
-          className="bg-black text-white text-xs px-4 py-1.5 rounded hover:bg-gray-800 transition-colors font-medium"
-        >
-          View Cart
-        </button>
-      </div>,
-      {
-        autoClose: 3000,
-      }
-    );
+    toast.success("Item added to cart", { autoClose: 3000 });
 
     if (token) {
       try {

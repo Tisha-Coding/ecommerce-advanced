@@ -19,20 +19,34 @@ connectCloudinary();
 // ================== MIDDLEWARES ==================
 app.use(express.json());
 
-// ✅ Final Safe CORS Configuration
-app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "https://ecommerce-frontend-1j1s.onrender.com",
-        "https://ecommerce-admin-hl5r.onrender.com"
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
-}));
+// 🚨 CORS FULLY OPEN — no restrictions on origin, methods, or headers.
+// Safety-net middleware: manually set permissive CORS headers on every response
+// and short-circuit preflight (OPTIONS) requests before any route handler runs.
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
+    );
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Expose-Headers", "*");
+    res.setHeader("Access-Control-Max-Age", "86400");
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(204);
+    }
+    next();
+});
 
-// Handle preflight OPTIONS requests (bahut important)
+// Also mount the cors() middleware with a wide-open config as a second layer.
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+        allowedHeaders: "*",
+        exposedHeaders: "*",
+        credentials: false,
+    })
+);
 app.options("*", cors());
 
 // chat route

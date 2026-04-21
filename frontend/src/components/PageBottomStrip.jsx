@@ -95,7 +95,7 @@ const PageBottomStrip = () => {
         <div className="text-center">
           <div className="inline-block">
             <Link
-              to="/shop"
+              to="/collection"
               className="group relative inline-flex items-center gap-2 bg-black text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <span>Explore Our Collection</span>
