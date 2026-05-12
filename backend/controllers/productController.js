@@ -67,11 +67,23 @@ const addProduct = async (req, res) => {
       return res.status(400).json({ message: "No files were uploaded" });
     }
 
-    // Upload images to Cloudinary
+    // Upload images to Cloudinary with optimization:
+    // - fetch_format auto → WebP for supported browsers (25-35% smaller)
+    // - quality auto:good → Cloudinary picks best quality (40-60% smaller)
+    // - width 800 + crop limit → max 800px wide, never enlarges small images
     let imagesUrl = await Promise.all(
       Object.values(validImages).map(async (image) => {
         let result = await Cloudinary.uploader.upload(image.path, {
           resource_type: "image",
+          folder: "products",
+          transformation: [
+            {
+              width: 800,
+              crop: "limit",
+              quality: "auto:good",
+              fetch_format: "auto",
+            },
+          ],
         });
         return result.secure_url;
       })

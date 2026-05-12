@@ -4,6 +4,7 @@ import { ShopContext } from "../context/ShopContext";
 import ProductItem from "../components/ProductItem";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
+import { getCloudinarySrcSet } from "../utils/cloudinary";
 
 const Product = () => {
   const { productId } = useParams();
@@ -100,13 +101,23 @@ const Product = () => {
               <img
                 onClick={() => setImage(item)}
                 src={item}
+                srcSet={getCloudinarySrcSet(item, [200, 400])}
+                sizes="(max-width: 640px) 24vw, 100px"
                 key={index}
+                loading="lazy"
                 className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
               />
             ))}
           </div>
           <div className="w-full sm:w-[80%]">
-            <img className="w-full h-auto" src={image} alt=" " />
+            <img
+              className="w-full h-auto"
+              src={image}
+              srcSet={getCloudinarySrcSet(image, [400, 700, 1000])}
+              sizes="(max-width: 640px) 100vw, 80vw"
+              alt={productData.name}
+              loading="eager"
+            />
           </div>
         </div>
 

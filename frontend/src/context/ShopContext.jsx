@@ -107,9 +107,7 @@ const ShopContextProvider = ({ children }) => {
   // Fetch products from backend
   const getProductsData = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/product/list`, {
-        params: { _: Date.now() } // Add cache busting
-      });
+      const response = await axios.get(`${backendUrl}/api/product/list`);
       if (response.data.success) {
         setProducts(response.data.products);
       } else {
